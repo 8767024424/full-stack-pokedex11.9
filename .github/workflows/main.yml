@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -22,13 +22,11 @@ jobs:
       run: npm install
       
     - name: Build application
-      # This step creates the 'build' directory required by 'start-prod'
       run: npm run build 
       
     - name: Install Playwright browsers
       uses: playwright-community/action-browser-install@v1
       
     - name: Run e2e tests
-      # Playwright automatically handles starting the server (npm run start-prod) 
-      # and waiting for it via the playwright.config.js settings.
+     
       run: npm run test:e2e 
