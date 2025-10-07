@@ -11,22 +11,25 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20' 
-        
-    - name: Install dependencies
-      run: npm install
-      
-    - name: Build application
-      run: npm run build 
-      
-    - name: Install Playwright browsers
-      uses: playwright-community/action-browser-install@v1
-      
-    - name: Run e2e tests
-     
-      run: npm run test:e2e 
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
+
+      - name: Install Playwright browsers
+        uses: playwright-community/action-browser-install@v1
+
+      - name: Run e2e tests
+        run: |
+          npx playwright install --with-deps
+          npm run test:e2e
+        shell: pwsh
