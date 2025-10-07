@@ -1,33 +1,31 @@
-// @ts-check
-import { test, expect } from '@playwright/test';
+const { test, describe, expect } = require('@playwright/test')
 
-
-
-test.describe('Pokedex', () => {
+describe('Pokedex', () => {
+  
+  // Test 1: Check front page content
   test('front page can be opened', async ({ page }) => {
-    await page.goto('/');
+     await page.goto('/') 
+     
+     // FIX: Use getByRole('link') to specifically target the link element, 
+     // avoiding the strict mode violation caused by the duplicate text in the <p> tag.
+     await expect(page.getByRole('link', { name: 'ivysaur', exact: true })).toBeVisible() 
+     
+     // Check for the copyright text at the bottom of the page.
+     await expect(page.getByText('Pokémon and Pokémon character names are trademarks of Nintendo.')).toBeVisible()
+  })
 
-    // Check for the Pokemon name 'ivysaur' (must be lowercase as per instructions).
-    await expect(page.getByText('ivysaur')).toBeVisible();
-
-    // Check for the copyright text at the bottom of the page.
-    await expect(page.getByText('Pokémon and Pokémon character names are trademarks of Nintendo.')).toBeVisible();
-  });
-
-  // Test 2: Ensures a user can navigate from the main page to a detail page.
+  // Test 2: Check navigation to a Pokemon's detail page
   test('ivysaur page can be navigated to and displays content', async ({ page }) => {
-    await page.goto('/');
-
-    // 1. Click the link/element associated with 'ivysaur'.
-    // We look for a link role with the exact text 'ivysaur'.
-    // If your app uses cards/buttons instead of standard links, you might need to adjust this selector.
-    await page.getByRole('link', { name: 'ivysaur', exact: true }).click();
+    await page.goto('/') 
     
-    // Optional: Check the URL changed to include the specific Pokemon name
-    await expect(page).toHaveURL(/.*\/ivysaur/);
+    // 1. Find the link for 'ivysaur' and click it.
+    await page.getByRole('link', { name: 'ivysaur', exact: true }).click()
+    
+    // Check for the URL to ensure navigation was successful (simulated in App.js).
+    await expect(page).toHaveURL(/.*ivysaur/) 
 
     // 2. Check for unique content on the detail page: 'chlorophyll'.
     // The ability name must be tested in lowercase.
-    await expect(page.getByText('chlorophyll')).toBeVisible();
-  });
-});
+    await expect(page.getByText('chlorophyll')).toBeVisible()
+  })
+})
