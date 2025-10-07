@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build-and-test:
@@ -26,10 +26,8 @@ jobs:
         run: npm run build
 
       - name: Install Playwright browsers
-        uses: playwright-community/action-browser-install@v1
+        run: npx playwright install --with-deps
 
       - name: Run e2e tests
-        run: |
-          npx playwright install --with-deps
-          npm run test:e2e
+        run: npm run test:e2e
         shell: pwsh
